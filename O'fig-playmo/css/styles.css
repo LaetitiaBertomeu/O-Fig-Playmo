@@ -1,0 +1,288 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  /*
+      Pour faciliter les calculs des tailles de polices,
+      je peux utiliser la technique du « 62.5% ».
+
+      En effet, 62.5% de 16px donne 10px, j'ai donc une base 10
+      pour faire mes calculs :
+
+      1rem vaut 10px
+
+      je veux 32px → 3.2rem
+      je veux 13px → 1.3rem
+
+      16px * 62.5% = 10px
+  */
+  font-size: 62.5%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  font-family: "Raleway", serif;
+  font-size: 1.6rem; /* 1.6 * html = 1.6 * 10px = 16px */
+  line-height: 1.5;
+  /*
+      100% de la hauteur de la zone d'affichage
+      vh = _viewport height_
+
+      (pour la largeur, vous avez `vw` (_viewport width_)
+  */
+  min-height: 100vh;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* HEADER */
+.header {
+  background-color: #c80000;
+  color: #fff;
+  padding: 16px;
+  position: sticky; /* il colle au viewport */
+  top: 0;
+  z-index: 100; /* il est au-dessus des autres éléments,
+  attention au z-index des badges */
+}
+
+.header__title {
+  font-size: 3.2rem; /* root (= html) * 3.2 = 10 * 3.2 = 32px */
+  font-weight: 700;
+}
+
+.header__subtitle {
+  /* font-size: 0.4062em; */ /* 13 / parent (= header__title) = 13 / 32 = 0.4062em */
+  font-size: 1.3rem; /* root (= html) * 1.3 = 10 * 1.3 = 13px */
+  font-weight: 700;
+}
+
+/* MAIN */
+.main {
+  /*
+      je précise que `.main` va prendre tout l'espace disponible
+      du flexbox grâce à flex-grow
+      https://developer.mozilla.org/fr/docs/Web/CSS/flex-grow
+  */
+  flex-grow: 1;
+}
+
+.main__title {
+  background-color: #666;
+  color: #fff;
+  font-size: 2.1rem; /* taille = 21px */
+  padding: 16px;
+  text-align: center;
+}
+.main__theme {
+  font-size: 1.1em; /* 1.1 * parent = 1.1 * 2.1rem = 23.1px */
+  font-style: italic;
+}
+
+/* Sales */
+.sales {
+  background: #c80000;
+  border-radius: 0 4px 4px 0;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  padding: 4px;
+  position: fixed; /* on fixe l'élément */
+  text-transform: uppercase;
+  text-decoration: none;
+  /*
+      pour centrer un élément dans une page
+      (avec position absolute ou fixed),
+      on le met à 50% du haut de la page  
+      on décale vers le haut de la moitié de sa hauteur
+  */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  word-wrap: break-word; /* provoque des césures dans le mot */
+}
+
+/* Products */
+.products {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 16px auto;
+  max-width: 960px;
+  row-gap: 24px; /* espace entre les lignes de ma flex box */
+  width: 90vw; /* 90% de la zone d'affichage (viewport) */
+}
+.product {
+  border: 1px solid #ccc;
+  padding: 8px;
+  position: relative; /* obligatoire pour positionner les badges */
+  width: 30%;
+}
+.product__header {
+  display: flex;
+  flex-direction: column;
+}
+.product__title {
+  font-size: 2.1rem;
+  font-weight: 700;
+  margin-bottom: 1.6rem;
+  /*
+      dans mon HTML, c'est le premier élément déclaré
+      par contre je veux qu'il soit affiché en dernier
+      
+      grâce à flexbox, je peux modifier l'ordre d'affichage des enfants
+      avec la propriété `order`
+      
+      par défaut, les enfants ont un order = 0
+      plus order est grand, plus tard il sera affiché
+
+      ici, les autres enfants ont un order à 0, ils seront affichés avant
+
+      > https://developer.mozilla.org/fr/docs/Web/CSS/order
+  */
+  order: 1;
+}
+.product__photo {
+  margin-bottom: 16px;
+}
+.product__category {
+  border-bottom: 1px solid; /* si pas de couleur, prend la couleur du texte */
+  color: #ccc;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  padding-bottom: 4px;
+  text-transform: uppercase;
+}
+.product__description {
+  margin-bottom: 16px;
+}
+.product__add-to-cart {
+  background-color: #c80000;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  padding: 16px;
+  text-decoration: none;
+}
+.product__price {
+  font-size: 1.1em;
+  font-weight: 700;
+}
+.product__price-strike {
+  text-decoration: line-through;
+}
+
+/* Badges */
+.product__badge {
+  background: #666;
+  border: 2px solid #ccc;
+  border-radius: 50%;
+  color: #fff;
+  height: 4.8rem;
+  text-align: center;
+  width: 4.8rem;
+
+  /* Comment centrer horizontalement et verticalement
+  un élément dans un parent ? */
+  display: flex; /* facilite le centrage du contenu */
+  justify-content: center; /* centre horizontalement */
+  align-items: center; /* centre verticalement */
+
+  /* Position : je ne dois pas oublier de positionner le parent
+  pour positionner mon enfant en absolute */
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  z-index: 1;
+}
+.product__badge--promo {
+  background-color: #c80000;
+}
+.product__badge--new {
+  background-color: #00a0c8;
+}
+
+/* Main cart.html */
+
+.cart-main {
+  height: 80vh;
+  width: 75%;
+  margin: 15px auto;
+}
+
+.cart-main__promo-aside {
+  position: fixed;
+  writing-mode: vertical-lr;
+  text-orientation: upright;
+  background-color: var(--main-accent-color);
+  border-radius: 0 10px 10px 0;
+  color: white;
+  padding: 10px 5px;
+  font-weight: bold;
+  left: 0;
+}
+
+.cart-main__form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form__delivery-options {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 10px 30px 10px;
+  margin: 10px 0;
+  border-bottom: 1px solid #ccbcbc;
+  gap: 32px;
+}
+
+.delivery-options__title {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.delivery-options__inputs {
+  display: flex;
+  justify-content: space-between;
+  gap: 100px;
+}
+
+.inputs__left,
+.inputs__right {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.inputs__fieldset {
+  line-height: 1.3;
+}
+
+.inputs__fieldset-legends {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: grey;
+  margin-bottom: 17px;
+}
+
+.fieldset__row-input {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+/* FOOTER */
+.footer {
+  background-color: #666;
+  color: #fff;
+  padding: 16px;
+  text-align: center;
+}
